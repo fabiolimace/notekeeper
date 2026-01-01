@@ -1,16 +1,16 @@
-APKM
+Note Keeper
 ======================================================
 
-APKM stands for Awk Personal Knowledge Management.
+Note Keeper is a set of tools for managing a local collection of notes.
 
-It is a set of tools for managing a collection of markdown files.
+A note is a plain text file or a markdown file.
 
 Dependencies:
 
 * Ubuntu's `mawk`, GNU's `gawk` or Busybox's `awk`.
 * Ubuntu's `dash`, GNU's `bash` or Busybox's `ash`.
 
-You must `cd` to the directory where your markdown collection in order to use the tools.
+You must `cd` your collection's directory in order to use the tools.
 
 Directory structure
 ------------------------------------------------------
@@ -18,15 +18,15 @@ Directory structure
 This is the basic directory structure:
 
 ```
-base
-└── .apkm
+COLLECTION
+└── .notekeeper
     ├── data
     └── html
 ```
 
-The markdown files will be saved in the `base` directory.
+The notes will be stored in the `COLLECTION` directory.
 
-The files related to APKM tools will be saved in `base/.apkm`, including metadata and HTML files. The `.apkm` directory is managed by the APKM tools. The base directory can be anyone that has a `.apkm` directory inside of it.
+The `COLLECTION/.notekeeper` directory is managed by the Note Keeper tools.
 
 Metadata Structure
 ------------------------------------------------------
@@ -58,9 +58,9 @@ This is a list of features to be implemented:
 * [x] A function to check if external links may be broken, verifying whether a HTTP request returns 200 (OK) or 404 (NOK).
 * [ ] A function to move a file from a path to another, while updating and normalizing links.
 * [ ] A function to remove a file from a path to another, while deleting marking links pointing to it as broken.
-* [x] A script to convert markdown texts to HTML files, placing the output into .apkm/html
-* [x] A simple script to serve the HTML files in `.apkm/html` in the local interface at a specific port.
-* [x] A script to generate data about markdown texts, placing the output into .apkm/data
+* [x] A script to convert markdown texts to HTML files, placing the output into .notekeeper/html
+* [x] A simple script to serve the HTML files in `.notekeeper/html` in the local interface at a specific port.
+* [x] A script to generate data about markdown texts, placing the output into .notekeeper/data
 * [x] Implement a [UUIDv8](https://gist.github.com/fabiolimace/8821bb4635106122898a595e76102d3a)
 * [x] History directory to track file changes.
 * [ ] An index page that lists all HTML pages.

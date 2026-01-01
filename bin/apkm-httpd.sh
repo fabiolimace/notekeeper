@@ -5,21 +5,21 @@
 #
 # Usage:
 #
-#     apkm-http-server.sh
+#     notekeeper-http-server.sh
 #
 # Configuration:
 #
-#     # file .apkm/conf.txt
+#     # file .notekeeper/conf.txt
 #     busybox.httpd.port=127.0.0.1:9000
 #
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 property_port="busybox.httpd.port"
 property_port_default="127.0.0.1:9000"
 
 busybox_httpd_port() {
-    local port=`grep -E "^${property_port}" "${WORKING_DIR}/.apkm/conf.txt" | sed "s/${property_port}=//"`;
+    local port=`grep -E "^${property_port}" "${WORKING_DIR}/.notekeeper/notekeeper.conf" | sed "s/${property_port}=//"`;
     if [ -n "${port}" ]; then
         echo "${port}";
     else
@@ -37,7 +37,7 @@ busybox_httpd_stop() {
 busybox_httpd_start() {
     local port=`busybox_httpd_port`;
 #    busybox httpd -p "$port" -h "$PROGRAM_DIR/../www/"
-    busybox httpd -p "$port" -h "$WORKING_DIR/.apkm/html/"
+    busybox httpd -p "$port" -h "$WORKING_DIR/.notekeeper/html/"
     echo Listening: "http://$port"
 }
 

@@ -8,7 +8,7 @@
 #     apwm-save-link.sh FILE
 #
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 file="${1}"
 temp=`make_temp`
@@ -56,7 +56,7 @@ main() {
     local type # Link type: Internal (I), External (E), Fragment (F)
     local brok # Broken link: unknown (0), broken (1)
     
-    "$PROGRAM_DIR/apkm-link.awk" "${file}" | while read -r line; do
+    "$PROGRAM_DIR/notekeeper-link.awk" "${file}" | while read -r line; do
         
         href="${line}";
         orig="${uuid}";

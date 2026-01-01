@@ -5,7 +5,7 @@
 #
 # Usage:
 #
-#     apwm-save-load.sh FILE [DATE|HASH]
+#     notekeeper-save-load.sh FILE [DATE|HASH]
 #
 # Returns the first version that matches DATE or HASH, otherwise returns the latest version.
 #
@@ -23,7 +23,7 @@
 #     3. End of diff '#&'.
 # 
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 file="${1}"
 date="${2}"

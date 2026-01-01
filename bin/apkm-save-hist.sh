@@ -5,7 +5,7 @@
 #
 # Usage:
 #
-#     apwm-save-hist.sh FILE
+#     notekeeper-save-hist.sh FILE
 #
 # History file structure:
 #
@@ -14,13 +14,13 @@
 #     3. End of diff '#%'.
 # 
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 file="${1}"
 require_file "${file}";
 
 file_diff() {
-    "$PROGRAM_DIR/apkm-load-hist.sh" "${file}" | diff -u /dev/stdin "${file}";
+    "$PROGRAM_DIR/notekeeper-load-hist.sh" "${file}" | diff -u /dev/stdin "${file}";
 }
 
 main() {

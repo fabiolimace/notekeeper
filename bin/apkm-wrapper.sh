@@ -1,20 +1,20 @@
 #!/bin/sh
 #
-# Wrapper for the real APKM main program
+# Wrapper for the real Note Keeper main program
 #
 # See: http://mywiki.wooledge.org/BashFAQ/028
 #
 
-if [ -e "~/.apkm.conf" ];
+if [ -e "~/.notekeeper.conf" ];
 then
-    . "~/.apkm.conf";
-elif [ -e "/etc/apkm.conf" ];
+    . "~/.notekeeper.conf";
+elif [ -e "/etc/notekeeper.conf" ];
 then
-    . "/etc/apkm.conf";
+    . "/etc/notekeeper.conf";
 fi;
 
-exec "$APKM_HOME/bin/apkm" || {
-    echo 1>&2 'Could not execute "$APKM_HOME/bin/apkm".\n'
+exec "$NOTEKEEPER_HOME/bin/notekeeper" || {
+    echo 1>&2 'Could not execute "$NOTEKEEPER_HOME/bin/notekeeper".\n'
     exit 1
 }
 

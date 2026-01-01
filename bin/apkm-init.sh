@@ -1,35 +1,35 @@
 #!/bin/sh
 
 #
-# Initializes the APKM in the current directory.
+# Initializes the Note Keeper in the current directory.
 #
 # Usage:
 #
 #     # Backup!
-#     apkm-init.sh
+#     notekeeper-init.sh
 #
 # How to undo initialization:
 #
 #     # Be careful and backup!
-#     rm -rf DIRECTORY/.apkm
+#     rm -rf COLLECTION/.notekeeper
 #
-# Where DIRECTORY is where this init script was executed.
+# Where COLLECTION is the directory where this init script was executed.
 #
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
-apkm_init_fs() {
+notekeeper_init() {
     
     echo "----------------------"
     echo "Init directory"
     echo "----------------------"
-    echo "mkdir -p \"$WORKING_DIR/.apkm\""
+    echo "mkdir -p \"$WORKING_DIR/.notekeeper\""
     
-    mkdir -p "$WORKING_DIR/.apkm"
-    mkdir -p "$WORKING_DIR/.apkm/html"
-    mkdir -p "$WORKING_DIR/.apkm/data"
+    mkdir -p "$WORKING_DIR/.notekeeper"
+    mkdir -p "$WORKING_DIR/.notekeeper/html"
+    mkdir -p "$WORKING_DIR/.notekeeper/data"
     
-cat > "$WORKING_DIR/.apkm/conf.txt" <<EOF
+cat > "$WORKING_DIR/.notekeeper/conf.txt" <<EOF
 busybox.httpd.port=127.0.0.1:9000
 EOF
 
@@ -41,14 +41,14 @@ then
     exit 1;
 fi;
 
-if [ -d "$WORKING_DIR/.apkm" ];
+if [ -d "$WORKING_DIR/.notekeeper" ];
 then
-    echo "APKM already initialized in this directory."
+    echo "Note Keeper already initialized in this directory."
     exit 1;
 fi;
 
 main() {
-    apkm_init_fs;
+    notekeeper_init;
 }
 
 main;

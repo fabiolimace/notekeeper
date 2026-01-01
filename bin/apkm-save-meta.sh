@@ -5,10 +5,10 @@
 #
 # Usage:
 #
-#     apwm-save-meta.sh FILE
+#     notekeeper-save-meta.sh FILE
 #
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 file="${1}"
 require_file "${file}"

@@ -5,16 +5,16 @@
 #
 # Usage:
 #
-#     apwm-save.sh FILE
+#     notekeeper-save.sh FILE
 #
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 # find only .md files
 find_regex=".*.\(md\)$";
 
-# ignore the .apkm folder
-ignore_regex="\\.\(apkm\)";
+# ignore the .notekeeper folder
+ignore_regex="\\.\(notekeeper\)";
 
 
 file_changed() {
@@ -47,11 +47,11 @@ main() {
         changed=`file_changed "${file}"`;
         
         if [ ${changed} -eq 1 ]; then
-            "$PROGRAM_DIR/apkm-save-meta.sh" "$file";
-            "$PROGRAM_DIR/apkm-save-link.sh" "$file";
-            "$PROGRAM_DIR/apkm-save-hist.sh" "$file";
-            "$PROGRAM_DIR/apkm-save-html.sh" "$file";
-            "$PROGRAM_DIR/apkm-save-stat.sh" "$file";
+            "$PROGRAM_DIR/notekeeper-save-meta.sh" "$file";
+            "$PROGRAM_DIR/notekeeper-save-link.sh" "$file";
+            "$PROGRAM_DIR/notekeeper-save-hist.sh" "$file";
+            "$PROGRAM_DIR/notekeeper-save-html.sh" "$file";
+            "$PROGRAM_DIR/notekeeper-save-stat.sh" "$file";
         fi;
     done;
 }

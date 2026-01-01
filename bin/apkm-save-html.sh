@@ -5,10 +5,10 @@
 #
 # Usage:
 #
-#     apwm-save-html.sh FILE
+#     notekeeper-save-html.sh FILE
 #
 
-. "`dirname "$0"`/apkm-common.sh";
+. "`dirname "$0"`/notekeeper-common.sh";
 
 file="${1}"
 require_file "${file}";
@@ -17,7 +17,7 @@ main() {
     local file="${1}"
     local html=`make_html "${file}"`
     mkdir -p "`dirname "${html}"`"
-    "$PROGRAM_DIR/apkm-html.awk" "${file}" > "${html}"
+    "$PROGRAM_DIR/notekeeper-html.awk" "${file}" > "${html}"
 }
 
 main "${file}";

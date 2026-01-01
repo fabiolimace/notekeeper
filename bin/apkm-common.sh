@@ -1,18 +1,18 @@
 #!/bin/sh
 
 #
-# Common variables and functions for APKM.
+# Common variables and functions for Note Keeper.
 #
 # Usage:
 # 
-#    . "`dirname "$0"`/apkm-common.sh";
+#    . "`dirname "$0"`/notekeeper-common.sh";
 #
 
 PROGRAM_DIR=`dirname "$0"` # The place where the bash and awk scripts are
-WORKING_DIR=`pwd -P` # The place where the markdown files are
+WORKING_DIR=`pwd -P` # The place where the collection files are
 
-HTML_DIR="$WORKING_DIR/.apkm/html";
-DATA_DIR="$WORKING_DIR/.apkm/data";
+HTML_DIR="$WORKING_DIR/.notekeeper/html";
+DATA_DIR="$WORKING_DIR/.notekeeper/data";
 
 CR="`printf "\r"`" # POSIX <carriage-return>
 LF="`printf "\n"`" # POSIX <newline>
@@ -42,9 +42,9 @@ validate_program_deps() {
 
 validate_program_path() {
 
-    if [ ! -f "$PROGRAM_DIR/apkm-init.sh" ];
+    if [ ! -f "$PROGRAM_DIR/notekeeper-init.sh" ];
     then
-        echo "Not the APKM program directory: '$PROGRAM_DIR'" 1>&2
+        echo "Not the Note Keeper program directory: '$PROGRAM_DIR'" 1>&2
         exit 1;
     fi;
     
@@ -55,15 +55,15 @@ validate_program_path() {
             exit 1;
         fi;
     done <<EOF
-$PROGRAM_DIR/apkm-html.awk
-$PROGRAM_DIR/apkm-link.awk
-$PROGRAM_DIR/apkm-tags.awk
-$PROGRAM_DIR/apkm-httpd.sh
-$PROGRAM_DIR/apkm-save.sh
-$PROGRAM_DIR/apkm-save-html.sh
-$PROGRAM_DIR/apkm-save-link.sh
-$PROGRAM_DIR/apkm-save-meta.sh
-$PROGRAM_DIR/apkm-save-hist.sh
+$PROGRAM_DIR/notekeeper-html.awk
+$PROGRAM_DIR/notekeeper-link.awk
+$PROGRAM_DIR/notekeeper-tags.awk
+$PROGRAM_DIR/notekeeper-httpd.sh
+$PROGRAM_DIR/notekeeper-save.sh
+$PROGRAM_DIR/notekeeper-save-html.sh
+$PROGRAM_DIR/notekeeper-save-link.sh
+$PROGRAM_DIR/notekeeper-save-meta.sh
+$PROGRAM_DIR/notekeeper-save-hist.sh
 EOF
 
 }
@@ -79,9 +79,9 @@ check_file_exists() {
 
 validate_working_path() {
 
-    if [ ! -d "$WORKING_DIR/.apkm" ];
+    if [ ! -d "$WORKING_DIR/.notekeeper" ];
     then
-        echo "Not a APKM markdown directory: '$WORKING_DIR'" 1>&2
+        echo "Not a Note Keeper collection directory: '$WORKING_DIR'" 1>&2
         exit 1;
     fi;
     
@@ -94,7 +94,7 @@ EOF
 
     if [ "$PWD" != "$WORKING_DIR" ];
     then
-        echo "Out of the APKM markdown directory: '$PWD' != '$WORKING_DIR'" 1>&2
+        echo "Out of the Note Keeper collection directory: '$PWD' != '$WORKING_DIR'" 1>&2
         exit 1;
     fi;
 }
@@ -182,7 +182,7 @@ make_path() {
 
 list_tags() {
     local file="${1}"
-    "$PROGRAM_DIR/apkm-tags.awk" "${file}";
+    "$PROGRAM_DIR/notekeeper-tags.awk" "${file}";
 }
 
 # Remove all "./" and "../" from paths,
@@ -247,7 +247,7 @@ validate() {
     
     validate_program_deps;
     validate_program_path;
-    if match "$0" "apkm-init.sh"; then
+    if match "$0" "notekeeper-init.sh"; then
         :
     else
         validate_working_path;
