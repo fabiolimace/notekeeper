@@ -36,7 +36,7 @@ busybox_httpd_stop() {
 
 busybox_httpd_start() {
     local port=`busybox_httpd_port`;
-#    busybox httpd -p "$port" -h "$PROGRAM_DIR/../www/"
+#    busybox httpd -p "$port" -h "$PROGRAM_DIR/www/"
     busybox httpd -p "$port" -h "$WORKING_DIR/.notekeeper/html/"
     echo Listening: "http://$port"
 }

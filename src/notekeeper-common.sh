@@ -55,10 +55,10 @@ validate_program_path() {
             exit 1;
         fi;
     done <<EOF
-$PROGRAM_DIR/notekeeper-html.awk
-$PROGRAM_DIR/notekeeper-link.awk
-$PROGRAM_DIR/notekeeper-tags.awk
-$PROGRAM_DIR/notekeeper-httpd.sh
+$PROGRAM_DIR/awk/notekeeper-html.awk
+$PROGRAM_DIR/awk/notekeeper-link.awk
+$PROGRAM_DIR/awk/notekeeper-tags.awk
+$PROGRAM_DIR/notekeeper-http-server.sh
 $PROGRAM_DIR/notekeeper-save.sh
 $PROGRAM_DIR/notekeeper-save-html.sh
 $PROGRAM_DIR/notekeeper-save-link.sh
@@ -182,7 +182,7 @@ make_path() {
 
 list_tags() {
     local file="${1}"
-    "$PROGRAM_DIR/notekeeper-tags.awk" "${file}";
+    "$PROGRAM_DIR/awk/notekeeper-tags.awk" "${file}";
 }
 
 # Remove all "./" and "../" from paths,

@@ -29,7 +29,7 @@ notekeeper_init() {
     mkdir -p "$WORKING_DIR/.notekeeper/html"
     mkdir -p "$WORKING_DIR/.notekeeper/data"
     
-cat > "$WORKING_DIR/.notekeeper/conf.txt" <<EOF
+cat > "$WORKING_DIR/.notekeeper/collection.conf" <<EOF
 busybox.httpd.port=127.0.0.1:9000
 EOF
 

@@ -17,7 +17,7 @@ main() {
     local file="${1}"
     local html=`make_html "${file}"`
     mkdir -p "`dirname "${html}"`"
-    "$PROGRAM_DIR/notekeeper-html.awk" "${file}" > "${html}"
+    "$PROGRAM_DIR/awk/notekeeper-html.awk" "${file}" > "${html}"
 }
 
 main "${file}";

@@ -56,7 +56,7 @@ main() {
     local type # Link type: Internal (I), External (E), Fragment (F)
     local brok # Broken link: unknown (0), broken (1)
     
-    "$PROGRAM_DIR/notekeeper-link.awk" "${file}" | while read -r line; do
+    "$PROGRAM_DIR/awk/notekeeper-link.awk" "${file}" | while read -r line; do
         
         href="${line}";
         orig="${uuid}";

@@ -15,7 +15,7 @@ tmpl=/dev/shm/tmpl.html
 
 generate_template() {
     cat /dev/null > "${tmpl}"
-    echo "---" |"$PROGRAM_DIR/notekeeper-html.awk" > "${tmpl}"
+    echo "---" |"$PROGRAM_DIR/awk/notekeeper-html.awk" > "${tmpl}"
 }
 
 exit_error() {
@@ -37,7 +37,7 @@ run_test() {
     sed -E '1,/<hr>/d' "${tmpl}" >> "${html}.temp"
     mv "${html}.temp" "${html}"
     
-    "$PROGRAM_DIR/notekeeper-html.awk" -vTEST=1 -- "${file}" \
+    "$PROGRAM_DIR/awk/notekeeper-html.awk" -vTEST=1 -- "${file}" \
         | diff -u - "${html}" \
         || exit_error ${numb};
 }
