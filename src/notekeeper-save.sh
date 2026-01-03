@@ -1,11 +1,11 @@
 #!/bin/sh
 
 #
-# Saves metadata, history and links in `data` folder.
+# Saves metadata, history and links in `COLLECTION/.notekeeper/data` folder.
 #
 # Usage:
 #
-#     notekeeper-save.sh FILE
+#     notekeeper-save.sh
 #
 
 PROGRAM_DIR=`dirname "$0"` # The place where the bash and awk scripts are
@@ -17,7 +17,7 @@ CR="`printf "\r"`" # POSIX <carriage-return>
 LF="`printf "\n"`" # POSIX <newline>
 HT="`printf "\t"`" # POSIX <tab>
 
-NOTE_SUFF="md"
+NOTE_SUFF=".md"
 
 HIST_NOTE_INFO="##"
 HIST_DIFF_START="#@"
@@ -158,8 +158,8 @@ data_path() {
     local name="${2}";
     local suff="${3}";
     local uuid=`note_uuid "${note}"`;
-    local byte=`echo "${uuid}" | cut -c1,2`
-    make_path "${DATA_DIR}/${byte}/${uuid}" "${name}" "${suff}"
+    local part="${uuid:0:2}"; # data directory partitioning
+    make_path "${DATA_DIR}/${part}/${uuid}" "${name}" "${suff}"
 }
 
 make_path() {
@@ -370,6 +370,8 @@ notekeeper_save_meta() {
     local updt="`now`"
     local tags="`list_tags "${note}"`"
     
+    make_dir "${meta}";
+    
     if [ -f "${meta}" ];
     then
         crdt=`grep -E "^crdt=" "${meta}" | head -n 1 | sed "s/^crdt=//"`;
@@ -564,22 +566,20 @@ notekeeper_load_hist() {
     cat "${temp_file}" && rm -f "${temp_file}" "${temp_diff}";
 }
 
+relative_pathname() {
+    local note="${1}"
+    match "${note}"
+}
+
 notekeeper_save() {
 
-    # find only .md files
-    local find_regex=".*.\(md\)$";
-    
-    # ignore the .notekeeper folder
-    local ignore_regex="\\.\(notekeeper\)";
-
-    cd "$WORKING_DIR";
-    find . -type f -regex "${find_regex}" | grep -v "${ignore_regex}" | while read -r line; do
+    cd "${WORKING_DIR}";
+    find . -type f -name "*${NOTE_SUFF}" -not -path "${WORKING_DIR}/.notekeeper" | while read -r line; do
     
         note=`echo $line | sed 's,^\./,,'`; # remove leading "./"
         changed=`note_changed "${note}"`;
         
         if [ ${changed} -eq 1 ]; then
-             make_dir "`make_meta "${note}"`" # TODO
              notekeeper_save_meta "${note}";
              notekeeper_save_link "${note}";
              notekeeper_save_hist "${note}";
