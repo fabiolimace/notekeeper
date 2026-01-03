@@ -86,7 +86,7 @@ main() {
     local date="${2}"
     local hash="${3}"
     
-    local uuid=`path_uuid "${file}"`;
+    local uuid=`note_uuid "${file}"`;
     local hist=`make_hist "${file}"`;
     
     require_file "${hist}" "No history for file '${file}'."
@@ -98,7 +98,7 @@ main() {
     
     cat "${hist}" | while IFS= read -r line; do
     
-        if match "${line}" "^${HIST_FILE_INFO}"; then
+        if match "${line}" "^${HIST_NOTE_INFO}"; then
             # ignore
             continue;
         elif match "${line}" "^${HIST_DIFF_START}"; then

@@ -27,7 +27,7 @@ main() {
 
     local file="${1}"
     
-    local uuid=`path_uuid "${file}"`;
+    local uuid=`note_uuid "${file}"`;
     local hist=`make_hist "${file}"`;
     
     local path="${file}"
@@ -35,8 +35,8 @@ main() {
     local hash="`file_hash "${file}"`"
     
     if [ ! -f "${hist}" ]; then
-        echo "$HIST_FILE_INFO uuid=${uuid}" >> "${hist}"
-        echo "$HIST_FILE_INFO path=${path}" >> "${hist}"
+        echo "$HIST_NOTE_INFO uuid=${uuid}" >> "${hist}"
+        echo "$HIST_NOTE_INFO path=${path}" >> "${hist}"
     fi;
     
     cat >> "${hist}" <<EOF

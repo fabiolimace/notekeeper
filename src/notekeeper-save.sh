@@ -21,7 +21,7 @@ file_changed() {
 
     local file="${1}"
     local hash=`file_hash "${file}"`
-    local uuid=`path_uuid "${file}"`;
+    local uuid=`note_uuid "${file}"`;
     local meta=`make_meta "${file}"`;
     
     local result=1;
@@ -47,6 +47,7 @@ main() {
         changed=`file_changed "${file}"`;
         
         if [ ${changed} -eq 1 ]; then
+             make_dir "`make_meta "${file}"`" # TODO
             "$PROGRAM_DIR/notekeeper-save-meta.sh" "$file";
             "$PROGRAM_DIR/notekeeper-save-link.sh" "$file";
             "$PROGRAM_DIR/notekeeper-save-hist.sh" "$file";

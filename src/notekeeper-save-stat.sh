@@ -15,7 +15,7 @@ require_file "${file}";
 
 main() {
     local file="${1}"
-    local uuid=`path_uuid "${file}"`;
+    local uuid=`note_uuid "${file}"`;
     local stat=`make_stat "${file}"`;
     LC_ALL=C "$PROGRAM_DIR/awk/notekeeper-stat.awk" -v WRITETO=/dev/stdout "${file}" > "${stat}"
 }

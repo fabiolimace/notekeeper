@@ -15,7 +15,7 @@ require_file "${file}";
 
 main() {
     local file="${1}"
-    local html=`make_html "${file}"`
+    local html=`html_path "${file}"`
     mkdir -p "`dirname "${html}"`"
     "$PROGRAM_DIR/awk/notekeeper-html.awk" "${file}" > "${html}"
 }

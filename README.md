@@ -3,14 +3,19 @@ Note Keeper
 
 Note Keeper is a set of tools for managing a local collection of notes.
 
-A note is a plain text file or a markdown file.
+A note is a markdown file in a collection directory.
+
+There are two ways to uniquely identify a note:
+
+* by its relative pathname;
+* by a pathname-based UUID.
 
 Dependencies:
 
 * Ubuntu's `mawk`, GNU's `gawk` or Busybox's `awk`.
 * Ubuntu's `dash`, GNU's `bash` or Busybox's `ash`.
 
-You must `cd` your collection's directory in order to use the tools.
+You must `cd` your collection directory in order to use the tools.
 
 Directory structure
 ------------------------------------------------------
@@ -24,7 +29,7 @@ COLLECTION
     └── html
 ```
 
-The notes will be stored in the `COLLECTION` directory.
+The `COLLECTION` directory is the base for notes relative pathnames.
 
 The `COLLECTION/.notekeeper` directory is managed by the Note Keeper tools.
 

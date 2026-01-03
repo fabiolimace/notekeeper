@@ -9,7 +9,7 @@
 #
 
 PROGRAM_DIR=`dirname "$0"` # The place where the bash and awk scripts are
-WORKING_DIR=`pwd -P` # The place where the collection files are
+WORKING_DIR=`pwd -P` # The place where the collection notes are
 
 HTML_DIR="$WORKING_DIR/.notekeeper/html";
 DATA_DIR="$WORKING_DIR/.notekeeper/data";
@@ -18,7 +18,9 @@ CR="`printf "\r"`" # POSIX <carriage-return>
 LF="`printf "\n"`" # POSIX <newline>
 HT="`printf "\t"`" # POSIX <tab>
 
-HIST_FILE_INFO="##"
+NOTE_SUFF="md"
+
+HIST_NOTE_INFO="##"
 HIST_DIFF_START="#@"
 HIST_DIFF_END="#%"
 
@@ -117,7 +119,7 @@ date_time() {
         elif match "${input}" ${NUMB_REGEX}; then
             date -d @"${input}" +"%F %T";
         else
-            date -d @0 +"%F %T"; # epoch
+            echo "1970-01-01 00:00:00"; # epoch
         fi;
     else
         date +"%F %T";
@@ -134,55 +136,62 @@ file_hash() {
     sha1sum "${file}" | head -c 40
 }
 
-path_uuid() {
-    local path="${1}"
-    local hash=`echo -n "${path}" | sha256sum`;
+rand_uuid() {
+    cat /proc/sys/kernel/random/uuid
+}
+
+note_uuid() {
+    local note="${1}"
+    local hash=`echo -n "${note}" | sha256sum`;
     echo "${hash}" | awk '{ print substr($0,1,8) "-" substr($0,9,4) "-8" substr($0,14,3) "-8" substr($0,18,3) "-" substr($0,21,12) }'
 }
 
 make_meta() {
-    local file="${1}"
-    make_data "${file}" "meta"
+    local note="${1}"
+    data_path "${note}" "meta" "data"
 }
 
 make_hist() {
-    local file="${1}"
-    make_data "${file}" "hist"
+    local note="${1}"
+    data_path "${note}" "hist" "diff"
 }
 
 make_link() {
-    local file="${1}"
-    make_data "${file}" "link"
+    local note="${1}"
+    data_path "${note}" "link" "tsv"
 }
 
 make_stat() {
-    local file="${1}"
-    make_data "${file}" "stat"
+    local note="${1}"
+    data_path "${note}" "stat" "tsv"
 }
 
-make_data() {
-    local file="${1}";
-    local suff="${2}";
-    local uuid=`path_uuid "${file}"`;
-    make_path "${DATA_DIR}" "${uuid}" "${suff}"
+data_path() {
+    local note="${1}";
+    local name="${2}";
+    local suff="${3}";
+    local uuid=`note_uuid "${note}"`;
+    local byte=`echo "${uuid}" | cut -c1,2`
+    make_path "${DATA_DIR}/${byte}/${uuid}" "${name}" "${suff}"
 }
 
-make_html() {
-    local file="${1}"
-    local name="`basename -s.md "${file}"`"
+html_path() {
+    local note="${1}"
+    local name=`basename -s."${NOTE_SUFF}" "${note}"`
     make_path "${HTML_DIR}" "${name}" "html"
 }
 
 make_path() {
     local base="${1}"
-    local file="${2}"
+    local name="${2}"
     local suff="${3}"
-    path_remove_dots "$base/$file.$suff"
+    path_remove_dots "${base}/${name}.${suff}"
 }
 
-list_tags() {
+make_dir() {
     local file="${1}"
-    "$PROGRAM_DIR/awk/notekeeper-tags.awk" "${file}";
+    local base=`dirname "${file}"`
+    [ -d "${base}" ] || mkdir -p "${base}"
 }
 
 # Remove all "./" and "../" from paths,

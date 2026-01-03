@@ -46,7 +46,7 @@ main() {
 
     local file="${1}"
     
-    local uuid=`path_uuid "${file}"`;
+    local uuid=`note_uuid "${file}"`;
     local link=`make_link "${file}"`;
     
     local orig # UUIDv8 of the origin file
@@ -81,7 +81,7 @@ main() {
             local norm_href=`normalize_href "${href}"`
             if [ -f "$norm_href" ]; then
                 brok="0";
-                dest="`path_uuid "${path}"`";
+                dest="`note_uuid "${path}"`";
             else
                 brok="1";
                 dest="";

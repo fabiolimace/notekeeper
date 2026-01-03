@@ -13,11 +13,16 @@
 file="${1}"
 require_file "${file}"
 
+list_tags() {
+    local note="${1}"
+    "$PROGRAM_DIR/awk/notekeeper-tags.awk" "${note}";
+}
+
 main() {
 
     local file="${1}"
     
-    local uuid=`path_uuid "${file}"`;
+    local uuid=`note_uuid "${file}"`;
     local meta=`make_meta "${file}"`;
     
     local path # Path relative to base directory
@@ -27,9 +32,9 @@ main() {
     local updt # Update date
     local tags # Comma separated values
     
-    local uuid="`path_uuid "${file}"`"
+    local uuid="`note_uuid "${file}"`"
     local path="${file}"
-    local name="`basename -s ".md" "${file}"`"
+    local name="`basename -s."${NOTE_SUFF}" "${file}"`"
     local hash="`file_hash "${file}"`"
     local crdt="`now`"
     local updt="`now`"
