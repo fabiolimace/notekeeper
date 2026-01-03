@@ -11,7 +11,6 @@
 PROGRAM_DIR=`dirname "$0"` # The place where the bash and awk scripts are
 WORKING_DIR=`pwd -P` # The place where the collection notes are
 
-HTML_DIR="$WORKING_DIR/.notekeeper/html";
 DATA_DIR="$WORKING_DIR/.notekeeper/data";
 
 CR="`printf "\r"`" # POSIX <carriage-return>
@@ -57,12 +56,10 @@ validate_program_path() {
             exit 1;
         fi;
     done <<EOF
-$PROGRAM_DIR/awk/notekeeper-html.awk
 $PROGRAM_DIR/awk/notekeeper-link.awk
 $PROGRAM_DIR/awk/notekeeper-tags.awk
 $PROGRAM_DIR/notekeeper-http-server.sh
 $PROGRAM_DIR/notekeeper-save.sh
-$PROGRAM_DIR/notekeeper-save-html.sh
 $PROGRAM_DIR/notekeeper-save-link.sh
 $PROGRAM_DIR/notekeeper-save-meta.sh
 $PROGRAM_DIR/notekeeper-save-hist.sh
@@ -90,7 +87,6 @@ validate_working_path() {
     while read -r line; do
         check_file_exists "$line";
     done <<EOF
-$HTML_DIR
 $DATA_DIR
 EOF
 
@@ -168,12 +164,6 @@ data_path() {
     local uuid=`note_uuid "${note}"`;
     local byte=`echo "${uuid}" | cut -c1,2`
     make_path "${DATA_DIR}/${byte}/${uuid}" "${name}" "${suff}"
-}
-
-html_path() {
-    local note="${1}"
-    local name=`basename -s."${NOTE_SUFF}" "${note}"`
-    make_path "${HTML_DIR}" "${name}" "html"
 }
 
 make_path() {
