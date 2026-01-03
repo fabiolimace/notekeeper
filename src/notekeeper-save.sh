@@ -52,7 +52,6 @@ main() {
             "$PROGRAM_DIR/notekeeper-save-link.sh" "$file";
             "$PROGRAM_DIR/notekeeper-save-hist.sh" "$file";
             "$PROGRAM_DIR/notekeeper-save-html.sh" "$file";
-            "$PROGRAM_DIR/notekeeper-save-stat.sh" "$file";
         fi;
     done;
 }

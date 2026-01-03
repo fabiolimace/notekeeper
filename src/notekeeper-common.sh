@@ -161,11 +161,6 @@ make_link() {
     data_path "${note}" "link" "tsv"
 }
 
-make_stat() {
-    local note="${1}"
-    data_path "${note}" "stat" "tsv"
-}
-
 data_path() {
     local note="${1}";
     local name="${2}";
