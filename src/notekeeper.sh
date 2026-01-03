@@ -5,7 +5,7 @@
 #
 # Usage:
 #
-#     notekeeper-save.sh
+#     notekeeper.sh
 #
 
 PROGRAM_DIR=`dirname "$0"` # The place where the bash and awk scripts are
@@ -19,9 +19,7 @@ HT="`printf "\t"`" # POSIX <tab>
 
 NOTE_SUFF=".md"
 
-HIST_NOTE_INFO="##"
-HIST_DIFF_START="#@"
-HIST_DIFF_END="#%"
+HIST_SEPARATOR="%%"
 
 NUMB_REGEX="^-?[0-9]+$";
 HASH_REGEX="^[a-f0-9]{40}$";
@@ -139,12 +137,12 @@ note_uuid() {
 
 make_meta() {
     local note="${1}"
-    data_path "${note}" "meta" "data"
+    data_path "${note}" "meta" "properties"
 }
 
 make_hist() {
     local note="${1}"
-    data_path "${note}" "hist" "diff"
+    data_path "${note}" "hist" "cookie-jar"
 }
 
 make_link() {
@@ -157,7 +155,8 @@ data_path() {
     local name="${2}";
     local suff="${3}";
     local uuid=`note_uuid "${note}"`;
-    make_path "${DATA_DIR}/${uuid:0:2}/${uuid}" "${name}" "${suff}"
+    local part=`echo "${uuid}" | cut -c1,2`;
+    make_path "${DATA_DIR}/${part}/${uuid}" "${name}" "${suff}"
 }
 
 make_path() {
@@ -448,32 +447,17 @@ notekeeper_save_link() {
 
 notekeeper_save_hist() {
     # Saves history in `hist` file.
-    # 
-    # History file structure:
-    # 
-    #     1. History file info '##'.
-    #     2. Start of diff '#@'.
-    #     3. End of diff '#%'.
-    # 
 
     local note="${1}"
     require_file "${note}";
     
-    local uuid=`note_uuid "${note}"`;
     local hist=`make_hist "${note}"`;
-    
     local updt="`file_updt "${note}"`"
     local hash="`file_hash "${note}"`"
     
-    if [ ! -f "${hist}" ]; then
-        echo "$HIST_NOTE_INFO uuid=${uuid}" >> "${hist}"
-        echo "$HIST_NOTE_INFO note=${note}" >> "${hist}"
-    fi;
-    
     cat >> "${hist}" <<EOF
-${HIST_DIFF_START} ${updt}${HT}${hash}
+${HIST_SEPARATOR} ${updt}${HT}${hash}
 `file_diff "${note}"`
-${HIST_DIFF_END}
 EOF
 
 }
@@ -489,12 +473,6 @@ notekeeper_load_hist() {
     #    - Use a date string that `date` command can parse, e.g: '2006-08-14 02:34:56'.
     #    - Use ">" to search for the first date after a given date, e.g: ">2024-06-24".
     #    - Use "<" to search for the last date before a given date, e.g: "<2024-06-24".
-    # 
-    # History file structure:
-    #
-    #     1. History file info '##'.
-    #     2. Start of diff '#@'.
-    #     3. End of diff '#&'.
     # 
 
     local note="${1}"
@@ -513,47 +491,44 @@ notekeeper_load_hist() {
     local temp_diff="`make_temp`"
     local temp_file="`make_temp`"
     
-    cat "${hist}" | while IFS= read -r line; do
+    cat "${hist}" | awk '{ print } END { print "'"${HIST_SEPARATOR}"'" }' | while IFS= read -r line; do
     
-        if match "${line}" "^${HIST_NOTE_INFO}"; then
-            # ignore
-            continue;
-        elif match "${line}" "^${HIST_DIFF_START}"; then
+        if match "${line}" "^${HIST_SEPARATOR}"; then
+        
+            if [ "${temp_hash}" ]; then
+            
+                if test -n "${date}" && match "${date}" "^<"; then
+                    if [ `unix_secs "${temp_date}"` -ge `unix_secs "${date#\<}"` ]; then
+                        break;
+                    fi;
+                fi;
+                
+                apply_patch "${temp_file}" "${temp_diff}" "${temp_hash}";
+                
+                if test -n "${date}" && match "${date}" "^>"; then
+                    if [ `unix_secs "${temp_date}"` -gt `unix_secs "${date#\>}"` ]]; then
+                        break;
+                    fi;
+                fi;
+                
+                if test -n "${date}" && match "${temp_date}" "^${date}"; then
+                    break;
+                fi;
+                
+                if test -n "${hash}" && match "${temp_hash}" "^${hash}"; then
+                    break;
+                fi;
+            fi;
         
             cat /dev/null > "${temp_diff}";
             
             temp_date="`echo "${line}" \
-                | sed -E "s/^$HIST_DIFF_START *//" \
+                | sed -E "s/^$HIST_SEPARATOR *//" \
                 | awk 'BEGIN { FS="'"${HT}"'" } {print $1}'`";
             temp_hash="`echo "${line}" \
-                | sed -E "s/^$HIST_DIFF_START *//" \
+                | sed -E "s/^$HIST_SEPARATOR *//" \
                 | awk 'BEGIN { FS="'"${HT}"'" } {print $2}'`";
                 
-            continue;
-        elif match "${line}" "^${HIST_DIFF_END}"; then
-        
-            if test -n "${date}" && match "${date}" "^<"; then
-                if [ `unix_secs "${temp_date}"` -ge `unix_secs "${date#\<}"` ]; then
-                    break;
-                fi;
-            fi;
-            
-            apply_patch "${temp_file}" "${temp_diff}" "${temp_hash}";
-            
-            if test -n "${date}" && match "${date}" "^>"; then
-                if [ `unix_secs "${temp_date}"` -gt `unix_secs "${date#\>}"` ]]; then
-                    break;
-                fi;
-            fi;
-            
-            if test -n "${date}" && match "${temp_date}" "^${date}"; then
-                break;
-            fi;
-            
-            if test -n "${hash}" && match "${temp_hash}" "^${hash}"; then
-                break;
-            fi;
-            
             continue;
         fi;
 
