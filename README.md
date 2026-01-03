@@ -1,7 +1,7 @@
 Note Keeper
 ======================================================
 
-Note Keeper is a set of tools for managing a local collection of notes.
+Note Keeper is a simple tool for managing a local collection of notes.
 
 A note is a markdown file in a collection directory.
 
