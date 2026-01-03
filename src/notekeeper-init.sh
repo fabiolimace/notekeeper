@@ -26,7 +26,6 @@ notekeeper_init() {
     echo "mkdir -p \"$WORKING_DIR/.notekeeper\""
     
     mkdir -p "$WORKING_DIR/.notekeeper"
-    mkdir -p "$WORKING_DIR/.notekeeper/html"
     mkdir -p "$WORKING_DIR/.notekeeper/data"
     
 cat > "$WORKING_DIR/.notekeeper/collection.conf" <<EOF
