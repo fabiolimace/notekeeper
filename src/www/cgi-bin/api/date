@@ -1,8 +1,0 @@
-#!/bin/sh
-
-cat <<EOF
-Content-Type: text/json; charset=utf-8
-
-$(date -Iseconds)
-EOF
-

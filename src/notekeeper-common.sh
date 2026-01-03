@@ -58,7 +58,6 @@ validate_program_path() {
     done <<EOF
 $PROGRAM_DIR/awk/notekeeper-link.awk
 $PROGRAM_DIR/awk/notekeeper-tags.awk
-$PROGRAM_DIR/notekeeper-http-server.sh
 $PROGRAM_DIR/notekeeper-save.sh
 $PROGRAM_DIR/notekeeper-save-link.sh
 $PROGRAM_DIR/notekeeper-save-meta.sh
