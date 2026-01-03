@@ -58,7 +58,6 @@ validate_program_path() {
     done <<EOF
 $PROGRAM_DIR/awk/notekeeper-link.awk
 $PROGRAM_DIR/awk/notekeeper-tags.awk
-$PROGRAM_DIR/notekeeper-save.sh
 EOF
 
 }
@@ -158,8 +157,7 @@ data_path() {
     local name="${2}";
     local suff="${3}";
     local uuid=`note_uuid "${note}"`;
-    local part="${uuid:0:2}"; # data directory partitioning
-    make_path "${DATA_DIR}/${part}/${uuid}" "${name}" "${suff}"
+    make_path "${DATA_DIR}/${uuid:0:2}/${uuid}" "${name}" "${suff}"
 }
 
 make_path() {
@@ -564,11 +562,6 @@ notekeeper_load_hist() {
     done;
     
     cat "${temp_file}" && rm -f "${temp_file}" "${temp_diff}";
-}
-
-relative_pathname() {
-    local note="${1}"
-    match "${note}"
 }
 
 notekeeper_save() {
