@@ -16,7 +16,7 @@
 # Where COLLECTION is the directory where this init script was executed.
 #
 
-. "`dirname "$0"`/notekeeper-common.sh";
+WORKING_DIR=`pwd -P`
 
 notekeeper_init() {
     
@@ -45,9 +45,5 @@ then
     exit 1;
 fi;
 
-main() {
-    notekeeper_init;
-}
-
-main;
+notekeeper_init;
 
